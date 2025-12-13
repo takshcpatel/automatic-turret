@@ -19,13 +19,13 @@ void setup() {
   delay(3000);
   homeX();
   delay(1000);
-  gotoX(10);
+  gotoY(10);
   delay(100);
-  gotoX(50);
+  gotoY(50);
   delay(100);
-  gotoX(40);
+  gotoY(40);
   delay(100);
-  gotoX(1);
+  gotoY(1);
 }
 
 void loop() {
@@ -35,7 +35,7 @@ void homeX() {
   // Serial.println("Homing X...");
 
   while (digitalRead(X_LIMIT_PIN) == LOW) {
-    stepX(0);
+    stepY(0);
     delay(5);
   }
   delay(50);
@@ -43,7 +43,7 @@ void homeX() {
   // Serial.println("limit hit, backing off...");
 
   for (int i = 0; i < 30; i++) {
-    stepX(1);
+    stepY(1);
     delay(5);
   }
 
@@ -56,19 +56,19 @@ void homeX() {
 }
 
 
-void gotoX(int degrees) {
+void gotoY(int degrees) {
   if (degrees < 2) {
     int angleError = (2 - tilt_angle);
-    moveX(angleError);
+    moveY(angleError);
     Serial.println("[!] Reached Soft Limit");
   } else {
     int angleError = (degrees - tilt_angle);
-    moveX(angleError);
+    moveY(angleError);
   }
   tilt_angle = degrees;
 }
 
-void moveX(int incremental_degrees) {
+void moveY(int incremental_degrees) {
   float STEPS_TO_MOVE = incremental_degrees / ANG_PER_STEP;
   STEPS_TO_MOVE = abs(round(STEPS_TO_MOVE));
 
@@ -77,7 +77,7 @@ void moveX(int incremental_degrees) {
   incremental_degrees = abs(incremental_degrees);
   for (int STEP_COUNT = 0; STEP_COUNT < STEPS_TO_MOVE; STEP_COUNT++) {
     if (digitalRead(X_LIMIT_PIN) == LOW) {
-      stepX(direction);
+      stepY(direction);
       delay(2);
     } else {
       Serial.println("[!!!] LIMIT PRESSED");
@@ -86,12 +86,12 @@ void moveX(int incremental_degrees) {
     }
   }
   if (LIMIT_STATUS == 0) {
-    Serial.println("[!] Completed moveX");
+    Serial.println("[!] Completed moveY");
   }
 }
 
 
-void stepX(int dir) {
+void stepY(int dir) {
   if (dir == 1) {
     digitalWrite(X_DIR_PIN, HIGH);
   } else {
