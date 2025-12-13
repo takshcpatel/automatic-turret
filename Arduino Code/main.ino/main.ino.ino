@@ -4,7 +4,7 @@
 #define X_ENABLE_PIN 8
 
 const float ANG_PER_STEP = 0.1125;
-int x_angle = 95;
+int tilt_angle = 0;
 
 int LIMIT_STATUS = 0;
 
@@ -19,9 +19,13 @@ void setup() {
   delay(3000);
   homeX();
   delay(1000);
-  moveX(50);
-  delay(20);
-  moveX(-60);
+  gotoX(10);
+  delay(100);
+  gotoX(50);
+  delay(100);
+  gotoX(40);
+  delay(100);
+  gotoX(1);
 }
 
 void loop() {
@@ -45,20 +49,32 @@ void homeX() {
 
   // Serial.println("switch released");
 
-  x_angle = 90;
+  tilt_angle = 0;
   LIMIT_STATUS = 0;
   Serial.println("[!] Homed X");
   delay(200);
 }
 
 
-void moveX(int degrees) {
-  float STEPS_TO_MOVE = degrees / ANG_PER_STEP;
+void gotoX(int degrees) {
+  if (degrees < 2) {
+    int angleError = (2 - tilt_angle);
+    moveX(angleError);
+    Serial.println("[!] Reached Soft Limit");
+  } else {
+    int angleError = (degrees - tilt_angle);
+    moveX(angleError);
+  }
+  tilt_angle = degrees;
+}
+
+void moveX(int incremental_degrees) {
+  float STEPS_TO_MOVE = incremental_degrees / ANG_PER_STEP;
   STEPS_TO_MOVE = abs(round(STEPS_TO_MOVE));
 
   int STEP_COUNT = 0;
-  int direction = (degrees < 0) ? 0 : 1;
-  degrees = abs(degrees);
+  int direction = (incremental_degrees < 0) ? 0 : 1;
+  incremental_degrees = abs(incremental_degrees);
   for (int STEP_COUNT = 0; STEP_COUNT < STEPS_TO_MOVE; STEP_COUNT++) {
     if (digitalRead(X_LIMIT_PIN) == LOW) {
       stepX(direction);
