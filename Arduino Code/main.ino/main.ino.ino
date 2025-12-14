@@ -1,31 +1,38 @@
 #define X_LIMIT_PIN 9
 #define X_STEP_PIN 2
 #define X_DIR_PIN 5
-#define X_ENABLE_PIN 8
+
+#define Y_STEP_PIN 3
+#define Y_DIR_PIN 6
+
+#define ALL_ENABLE_PIN 8
 
 const float ANG_PER_STEP = 0.1125;
 int tilt_angle = 0;
+int pan_angle = 0; 
 
 int LIMIT_STATUS = 0;
 
 void setup() {
   Serial.begin(115200);
+
   pinMode(X_STEP_PIN, OUTPUT);
   pinMode(X_DIR_PIN, OUTPUT);
-  pinMode(X_ENABLE_PIN, OUTPUT);
   pinMode(X_LIMIT_PIN, INPUT_PULLUP);
 
-  digitalWrite(X_ENABLE_PIN, LOW);  // Enable driver (LOW = ON)
+  pinMode(Y_DIR_PIN, OUTPUT);
+  pinMode(Y_STEP_PIN, OUTPUT);
+
+  pinMode(ALL_ENABLE_PIN, OUTPUT);
+
+  digitalWrite(ALL_ENABLE_PIN, LOW);  // enable driver (LOW = ON)
   delay(3000);
   homeX();
   delay(1000);
-  gotoY(10);
-  delay(100);
-  gotoY(50);
-  delay(100);
-  gotoY(40);
-  delay(100);
-  gotoY(1);
+  gotoX(50);
+  gotoY(30);
+  gotoX(0);
+  gotoY(0);
 }
 
 void loop() {
@@ -55,6 +62,11 @@ void homeX() {
   delay(200);
 }
 
+void gotoX(int degrees){
+  int angleError = (degrees - pan_angle);
+  moveX(angleError);
+  pan_angle = degrees;
+}
 
 void gotoY(int degrees) {
   if (degrees < 2) {
@@ -66,6 +78,21 @@ void gotoY(int degrees) {
     moveY(angleError);
   }
   tilt_angle = degrees;
+}
+
+void moveX(int incremental_degrees) {
+  float STEPS_TO_MOVE = incremental_degrees / ANG_PER_STEP;
+  STEPS_TO_MOVE = abs(round(STEPS_TO_MOVE));
+
+  int STEP_COUNT = 0;
+  int direction = (incremental_degrees < 0) ? 0 : 1;
+  incremental_degrees = abs(incremental_degrees);
+  for (int STEP_COUNT = 0; STEP_COUNT < STEPS_TO_MOVE; STEP_COUNT++) {
+    stepX(direction);
+    delay(2);
+  }
+
+  Serial.println("[!] Completed moveX");
 }
 
 void moveY(int incremental_degrees) {
@@ -90,8 +117,7 @@ void moveY(int incremental_degrees) {
   }
 }
 
-
-void stepY(int dir) {
+void stepX(int dir) {
   if (dir == 1) {
     digitalWrite(X_DIR_PIN, HIGH);
   } else {
@@ -100,5 +126,17 @@ void stepY(int dir) {
   digitalWrite(X_STEP_PIN, HIGH);
   delayMicroseconds(600);
   digitalWrite(X_STEP_PIN, LOW);
+  delayMicroseconds(600);
+}
+
+void stepY(int dir) {
+  if (dir == 1) {
+    digitalWrite(Y_DIR_PIN, HIGH);
+  } else {
+    digitalWrite(Y_DIR_PIN, LOW);
+  }
+  digitalWrite(Y_STEP_PIN, HIGH);
+  delayMicroseconds(600);
+  digitalWrite(Y_STEP_PIN, LOW);
   delayMicroseconds(600);
 }
