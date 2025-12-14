@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QPlainTextEdit,
     QCheckBox,
+    QLineEdit
 )
 from PyQt5.QtCore import QTimer
 import sys
@@ -16,9 +17,15 @@ class Window(QWidget):
 
         # --- UI ---#
         self.setWindowTitle("New Person, Same Old Mistakes - Tame Impala")
+        self.resize(960, 640)
+        
         self.BTN_Connect = QPushButton("Connect")
+
         self.Console = QPlainTextEdit()
         self.Console.setReadOnly(True)
+        self.command_input = QLineEdit()
+        self.command_input.setPlaceholderText("GCode I/P ...")
+
 
         layout_main = QVBoxLayout()
         layout_console = QVBoxLayout()
@@ -33,6 +40,9 @@ class Window(QWidget):
 
         layout_console.addWidget(self.BTN_Connect)
         layout_console.addWidget(self.Console)
+        layout_console.addWidget(self.command_input)
+
+        self.command_input.returnPressed.connect(self.send_command)
         layout_main.addLayout(layout_console)
         self.setLayout(layout_main)
 
@@ -47,6 +57,21 @@ class Window(QWidget):
         self.timer.timeout.connect(self.read_serial)
 
         self.BTN_Connect.clicked.connect(self.connect_arduino)
+
+    def send_command(self):
+        command = self.command_input.text().strip()
+
+        if self.ser and self.ser.is_open:
+            try:
+                self.ser.write((command + "\n").encode())
+                self.log(f"[ USER CMD ] => {command}")
+                self.command_input.clear()
+            except Exception as e:
+                self.log(f"[!!] Error while sending command :- {e}")
+                self.command_input.clear()
+        else:
+            self.log("[!!!] Serial port not connected.")
+            self.command_input.clear()
 
     def log(self, text):
         if text.startswith("[!!!]") and not self.checkbox_lvl3.isChecked():
@@ -63,11 +88,11 @@ class Window(QWidget):
     def connect_arduino(self):
         try:
             self.ser = serial.Serial("/dev/ttyACM0", 115200, timeout=0)
-            self.log("Connected to Arduino")
+            self.log("[ USER CMD ] => Connected to Arduino")
             self.timer.start(25)
 
         except serial.SerialException as e:
-            self.log(f"Error connecting to Arduino: {e}")
+            self.log(f"[!!!] Error connecting to Arduino: {e}")
 
     def read_serial(self):
         if self.ser and self.ser.in_waiting:
