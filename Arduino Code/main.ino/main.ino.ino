@@ -39,9 +39,6 @@ void setup() {
 
   homeX();
   delay(500);
-
-  gotoXY(50, 50);
-  gotoXY(0, 0);
 }
 
 void loop() {
@@ -100,6 +97,30 @@ void moveY(int inc_deg) {
   tilt_angle += inc_deg;
 }
 
+void moveXY(int x_deg, int y_deg){
+  long sx = angleToSteps(x_deg);
+  long sy = angleToSteps(y_deg);
+
+  stepperX.move(sx);
+  stepperY.move(sy);
+
+  while (stepperX.distanceToGo() != 0 ||
+         stepperY.distanceToGo() != 0) {
+
+    if (digitalRead(X_LIMIT_PIN) == HIGH) {
+      stepperX.stop();
+      stepperY.stop();
+      LIMIT_STATUS = true;
+      break;
+    }
+
+    stepperX.run();
+    stepperY.run();
+  }
+  pan_angle += x_deg;
+  tilt_angle += y_deg;
+}
+
 void gotoXY(int x_deg, int y_deg) {
   int dx = x_deg - pan_angle;
   int dy = y_deg - tilt_angle;
@@ -135,8 +156,7 @@ void parseGcode(char *cmd) {
   if (count != 3) return;
 
   if (g == 0) {
-    moveX(x);
-    moveY(y);
+    moveXY(x, y);
   }
   else if (g == 1) {
     gotoXY(x, y);

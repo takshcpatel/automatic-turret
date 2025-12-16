@@ -35,6 +35,7 @@ class CameraWorker(QThread):
 
         while self.running:
             frame = self.picam2.capture_array()
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
             h, w, _ = frame.shape
             screen_center = (w // 2, h // 2)
