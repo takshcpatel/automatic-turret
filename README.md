@@ -1,6 +1,6 @@
 # Vision-Guided Automatic Turret
 
-An automated vision-guided turret built as a learning project to explore precise camera-to-motor control, real-time human detection, tracking, and system-level decision logic. The project focuses on integrating computer vision with embedded control systems in a controlled, experimental setup.
+An automated vision-guided turret built as a learning project to leanr and experiment with camera-to-motor control, real-time detection, tracking, and confidence in decision logic.
 
 ---
 
@@ -14,38 +14,26 @@ The system is developed purely to study robotics, control systems, and computer 
 
 ## Project Overview
 
-This turret uses a camera-based vision system to detect and track humans in real time.  
-It differentiates between **registered** and **unregistered** individuals and follows a staged response logic:
+This turret uses a camera-based vision system to detect and track humans in real time. ( I wish to add a time of flight camera for distance to target measurement )
+It differentiates between actions that are **lethal** and **non-lethal** and responds accordingly:
 
 1. Detect human presence using computer vision  
-2. Verify whether the detected person is registered  
-3. Issue multiple warning stages if unregistered  
-4. If warnings are ignored, the system tracks the target and shoots the target
+2. Track human actions to see if it is lethal to the machine or its briefcase ( tf2 reference )   
+3. Alert using buzzer or LEDs  
+4. If alerts are ignored, the system tracks the target and shoots the target
 
-The emphasis of this project is on **accuracy, timing, and coordination** between vision data and motor control rather than on the output mechanism itself.
+The emphasis of this project is on **accuracy, timing, and coordination** between vision data and motor control rather than on the output mechanism itself. (copium btw)
 
 ---
 
 ## Key Learning Objectives
 
-- Precise camera-to-motor calibration
+- Camera to motor control 
 - Real-time object detection and tracking
 - Vision-based target following
-- State-machine based decision making
-- Embedded motor control (pan/tilt systems)
-- Hardware–software integration
-- Safety-aware system design
-
----
-
-## Features 
-
-- Real-time human detection using computer vision  
-- Registered vs unregistered target differentiation  
-- Multi-stage warning system  
-- Smooth pan–tilt tracking control  
-- Non-lethal airsoft actuation for testing  
-- Modular and expandable architecture  
+- Confidence based decision making ( not yet developed )
+- Mechanical CAD ( its my first time doing CAD for a big project )
+- Develop HMI
 
 ---
 
@@ -62,25 +50,26 @@ The emphasis of this project is on **accuracy, timing, and coordination** betwee
   - Camera-to-motor mapping  
 
 - **Decision Logic**  
-  - Registration checks  
+  - Registration checks
+  - Action detection 
   - Warning stages  
   - Engagement  
 
 - **Actuation Module**  
-  - Non-lethal airsoft mechanism  
+  - Airsoft mechanism  
   - Triggered only after logic conditions are met  
 
 ---
 
-## Technologies Used
+## Things Used
 
 - OpenCV
-- RaspberryPi 5 and Arduino Uno R3
+- RaspberryPi 5 and Arduino Uno R3 ( with CNC Shield )
 - Nema17 Stepper Motors with A4988 Drivers
 - RaspberryPi Camera Module 3 (Wide)
 - Python / C++ 
 - Serial Communication for Arduino <--> RaspberryPi
-- WiFi Communication HMI <--> RaspberryPi 
+- WiFi Communication HMI <--> RaspberryPi
 
 ---
 
@@ -91,6 +80,8 @@ The emphasis of this project is on **accuracy, timing, and coordination** betwee
 Implentations so far include:
 - Homing
 - Go-To Angle for Tilt
+- Tracking ( color based )
+- Shooting ( A little inaccurate but increasing barrel lenght should fix it )
 - GUI made with PyQT5
 - HMI <--> RaspberryPi
 
@@ -103,5 +94,7 @@ Free to use 😉, just mention name in sources and send me updates too!
 
 ## Author
 
+** Taksh Patel **
+
 Built as a personal robotics learning project.  
-Feel free to explore, learn, and adapt the concepts — responsibly.
+Feel free to explore and use.
