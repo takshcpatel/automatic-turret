@@ -27,7 +27,7 @@ int X_SPEED = 5000;
 int Y_SPEED = 3000;
 bool LIMIT_STATUS = false;
 bool SNAP_ACTIVE = false;
-bool CUMSHOT_READY = false;
+bool SHOOT_READY = false;
 
 
 AccelStepper stepperX(AccelStepper::DRIVER, X_STEP_PIN, X_DIR_PIN);
@@ -41,7 +41,7 @@ void homeX();
 void moveXY(int x_deg, int y_deg);
 void gotoXY(int x_deg, int y_deg);
 void snapMoveXY(int x_deg, int y_deg);
-void cumshot();
+void shoot();
 void parseGcode(char *cmd);
 
 long angleToSteps(int deg)
@@ -80,8 +80,8 @@ void loop()
     stepperX.run();
     stepperY.run();
   }
-  // keep Z running in background when CUMSHOT_READY
-  if (CUMSHOT_READY) {
+  // keep Z running in background when SHOOT_READY
+  if (SHOOT_READY) {
     stepperZ.runSpeed();
   }
 
@@ -100,7 +100,7 @@ void loop()
     }
   }
 
-  cumshot();
+  shoot();
 }
 
 void homeX()
@@ -109,7 +109,7 @@ void homeX()
   while (digitalRead(X_LIMIT_PIN) == LOW)
   {
     stepperY.runSpeed();
-    if (CUMSHOT_READY) stepperZ.runSpeed();
+    if (SHOOT_READY) stepperZ.runSpeed();
   }
 
   tiltServo.write(93);
@@ -140,7 +140,7 @@ void moveXY(int x_deg, int y_deg)
     }
     stepperX.run();
     stepperY.run();
-    if (CUMSHOT_READY) stepperZ.runSpeed();
+    if (SHOOT_READY) stepperZ.runSpeed();
   }
 
   pan_angle += x_deg;
@@ -170,7 +170,7 @@ void gotoXY(int x_deg, int y_deg)
     }
     stepperX.run();
     stepperY.run();
-    if (CUMSHOT_READY) stepperZ.runSpeed();
+    if (SHOOT_READY) stepperZ.runSpeed();
   }
 
   pan_angle = x_deg;
@@ -209,7 +209,7 @@ void snapMoveXY(int x_deg, int y_deg)
       }
       if (stepperX.currentPosition() != tx) stepperX.runSpeed();
       if (stepperY.currentPosition() != ty) stepperY.runSpeed();
-      if (CUMSHOT_READY) stepperZ.runSpeed();
+      if (SHOOT_READY) stepperZ.runSpeed();
     }
 
     tilt_angle += y_deg;
@@ -231,8 +231,8 @@ void snapMoveXY(int x_deg, int y_deg)
   SNAP_ACTIVE = false;
 }
 
-// void cumshot(){
-//   if (CUMSHOT_READY){
+// void shoot(){
+//   if (SHOOT_READY){
 //     stepperZ.runSpeed();
 //   }
 // }
@@ -263,10 +263,10 @@ void parseGcode(char *cmd)
     Y_SPEED = y_spd;}
   else if (g == 11){
     stepperZ.setSpeed(300);
-    CUMSHOT_READY = true;}
+    SHOOT_READY = true;}
   else if (g == 12){
     stepperZ.setSpeed(0);
-    CUMSHOT_READY = false;}
+    SHOOT_READY = false;}
   else if (g == 28)
     homeX();
   else if (g == 98)

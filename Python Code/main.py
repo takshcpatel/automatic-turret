@@ -41,32 +41,32 @@ class Window(QWidget):
             "background-color: #2b2b2b; color: white; font-family: Arial; font-size: 14px;"
         )
 
-        self.BTN_Connect = QPushButton("Connect") # connect button
+        self.BTN_Connect = QPushButton("CONNECT") # connect button
         self.BTN_Connect.setFixedSize(100, 40)
         self.BTN_Connect.setStyleSheet(
             "background-color: #4CAF50; color: white; border: none; border-radius: 5px;"
         )
 
-        self.PBTN_Bonner = QPushButton("Bonner") # bonner toggle button
+        self.PBTN_Bonner = QPushButton("BONNER") # bonner toggle button
         self.PBTN_Bonner.setFixedSize(100, 40)
         self.PBTN_Bonner.setStyleSheet(
             "background-color: #2aab20; color: white; border: none; border-radius: 5px;"
         )
 
-        self.BTN_CUMSHOT = QPushButton("CUMM") # cumshot button
+        self.BTN_CUMSHOT = QPushButton("SHOOT") # cumshot button
         self.BTN_CUMSHOT.setFixedSize(100, 40)
         self.BTN_CUMSHOT.setStyleSheet(
             "background-color: #ffffff; color: black; border: none; border-radius: 5px;"
         )
 
-        self.BTN_PULLOUT = QPushButton("PULL OUT") # pull out button
+        self.BTN_PULLOUT = QPushButton("STOP SHOOT") # pull out button
         self.BTN_PULLOUT.setFixedSize(100, 40)
         self.BTN_PULLOUT.setStyleSheet(
             "background-color: #ffffff; color: black; border: none; border-radius: 5px;"
         )
 
         self.BTN_PULLOUT.clicked.connect(self.pullout_manager)
-        self.BTN_CUMSHOT.clicked.connect(self.cum_manager)
+        self.BTN_CUMSHOT.clicked.connect(self.shoot_manager)
 
         self.PBTN_Bonner.setCheckable(True)
         self.PBTN_Bonner.setChecked(True)
@@ -256,8 +256,8 @@ class Window(QWidget):
             except Exception as e:
                 self.log(f"Read error: {e}")
 
-    def cum_manager(self):
-        self.log("[ USER CMD ] => Cummed")
+    def shoot_manager(self):
+        self.log("[ USER CMD ] => Shooting")
         self.send_command("G11")
 
     def pullout_manager(self):
