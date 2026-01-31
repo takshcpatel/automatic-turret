@@ -182,6 +182,21 @@ class Window(QWidget):
             except Exception as e:
                 self.log(f"Read error: {e}")
 
+    def bonnerManager(self):
+        if self.PBTN_Bonner.isChecked():
+            self.log("[ USER CMD ] => Bonner Activated")
+            self.PBTN_Bonner.setStyleSheet(
+                "background-color: #2aab20; color: white; border: none; border-radius: 5px;"
+            )
+            self.send_command("G99")
+        else:
+            self.log("[ USER CMD ] => Bonner Deactivated")
+            self.PBTN_Bonner.setStyleSheet(
+                "background-color: #eb4034; color: white; border: none; border-radius: 5px;"
+            )
+            self.send_command("G98")
+
+
     def closeEvent(self, event):
         if self.camera.isRunning():
             self.camera.stop()
