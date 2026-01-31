@@ -37,7 +37,7 @@ class Window(QWidget):
         
         self.previous_attack_state = False  
 
-        self.setWindowTitle("TURRET CONTROL SYSTEM")
+        self.setWindowTitle("the master gooner v2.0")
         self.resize(1000, 600)
         
         import os
