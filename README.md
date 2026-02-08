@@ -42,19 +42,14 @@ I have used a 12V+ 10000mAh Li-Po battery which connects to the CNC Shield and a
 - There can be other similar use case in many fields, mainly for security but more is yet to be discovered.
 
 ## Hardware List
-- RaspberryPi 5 8Gb
-
-- RaspberryPi Camera 3 Wide
-
-- Arduino Uno
-
-- Arduino Uno CNC Shield 
-
-- Orange NMC 18650 11.1V 10000mAh Battery
-
-- Lazy Susan Bearing
-
-- 3D Printed CAD Models
+|Item| Price  |
+|--|--|
+|RaspberryPi 5 8Gb  |99$|
+|RaspberryPi Camera 3 Wide| 21$ |
+|Arducam ToF Camera | 66$ |
+|Orange NMC 11.1V 10000mAh | 44$ |
+| 3D Printed Parts | Not accounted for
+|Total|≈232$
 
 ## Libraries
 
