@@ -1,107 +1,65 @@
-# Vision-Guided Automatic Turret
+# BOB THE GUN
+This is an automatic turret inspired by the tf2's engineer's sentry gun. It detects and shoots threats if they do not comply from warning. I have made this project to learn about CAD, mechanical, computer vision, software->hardware communication, etc.
 
-An automated vision-guided turret built as a learning project to explore precise camera-to-motor control, real-time human detection, tracking, and system-level decision logic. The project focuses on integrating computer vision with embedded control systems in a controlled, experimental setup.
+![Image of gun](https://github.com/takshcpatel/automatic-turret/blob/main/Image%20And%20Videos/IMG_4446.JPG?raw=true)
 
----
+![Image of CAD](https://github.com/takshcpatel/automatic-turret/blob/main/Image%20And%20Videos/CAD.jpg?raw=true)
 
-## ⚠️ Disclaimer
+## Working 
+### Mechanical
+This is an electric airsoft gun ( EAG ) type of mechanism mounted on a Pan / Tilt Mechanism. It is has a pan freedom of **∞**º and a tilt freedom of about 70-80º. Uses a lazy susan bearing for the infinite pan motion and the camera is connected to a SG-90 Servo for a independent tilt motion.
 
-This project is for educational and experimental purposes only.  
-It uses a non-lethal airsoft (plastic BB) mechanism and is **not intended for real-world security, harm, or weaponization**.  
-The system is developed purely to study robotics, control systems, and computer vision concepts.
+### Software 
+The computer vision and calculations are done in the [RaspberryPi 5](https://www.raspberrypi.com/products/raspberry-pi-5/). It receives frames from the [RaspberryPi Camera 3 Wide](https://www.raspberrypi.com/products/camera-module-3/). (For now) It detects an object based on color (currently yellow) and calculates the direction to move. It has a deadzone system for determining when to shoot.
 
----
+### Hardware controlling 
+The Nema17 motors are controlled by an Arduino Uno with the CNC Shield V3. The Arduino is connected to the RPi using a standard USB Type A - USB Type B. The RPi sends G-Code like commands to the Arduino to control the motors. 
 
-## Project Overview
+The human interface is controlled directly from the python script using either ethernet cable (restricts movement) or by Wi-Fi  local network, it works completely offline if you want it. 
 
-This turret uses a camera-based vision system to detect and track humans in real time.  
-It differentiates between **registered** and **unregistered** individuals and follows a staged response logic:
+### Power 
+I have used a 12V+ 10000mAh Li-Po battery which connects to the CNC Shield and a XH-M404 Buck converter. The XH-M404 outputs 5.25V+ for the RaspberryPi and the Servo Motors.
 
-1. Detect human presence using computer vision  
-2. Verify whether the detected person is registered  
-3. Issue multiple warning stages if unregistered  
-4. If warnings are ignored, the system tracks the target and shoots the target
+## Use cases and applications
+- If built with better parts and task specifics, it can be a use-case of riot-control. Sounds absurd but something like a paintball bullet or similar can be used to mark out people who are to be arrested for adding violence to the riot.
 
-The emphasis of this project is on **accuracy, timing, and coordination** between vision data and motor control rather than on the output mechanism itself.
+- Similarly, It can be used for drone defense if used with a guns / signal jammers / net launchers, etc.
 
----
+- Can used for home security. This type can be equipped with rubber bullets so it hurts enough the robbers / intruders but doesn't. Of course it will have some kind of manual confirmation before shooting. 
 
-## Key Learning Objectives
+- There can be other similar use case in many fields, mainly for security but more is yet to be discovered.
 
-- Precise camera-to-motor calibration
-- Real-time object detection and tracking
-- Vision-based target following
-- State-machine based decision making
-- Embedded motor control (pan/tilt systems)
-- Hardware–software integration
-- Safety-aware system design
+## Hardware List
+- RaspberryPi 5 8Gb
 
----
+- RaspberryPi Camera 3 Wide
 
-## Features 
+- Arduino Uno
 
-- Real-time human detection using computer vision  
-- Registered vs unregistered target differentiation  
-- Multi-stage warning system  
-- Smooth pan–tilt tracking control  
-- Non-lethal airsoft actuation for testing  
-- Modular and expandable architecture  
+- Arduino Uno CNC Shield 
 
----
+- Orange NMC 18650 11.1V 10000mAh Battery
 
-## System Architecture (Not Completed fully!)
+- Lazy Susan Bearing
 
-- **Vision Module**  
-  - Camera input  
-  - Human detection and tracking  
-  - Target position estimation  
+- 3D Printed CAD Models
 
-- **Control Module**  
-  - Pan–tilt motor control  
-  - PID / motion smoothing (if implemented)  
-  - Camera-to-motor mapping  
-
-- **Decision Logic**  
-  - Registration checks  
-  - Warning stages  
-  - Engagement  
-
-- **Actuation Module**  
-  - Non-lethal airsoft mechanism  
-  - Triggered only after logic conditions are met  
-
----
-
-## Technologies Used
+## Libraries
 
 - OpenCV
-- RaspberryPi 5 and Arduino Uno R3
-- Nema17 Stepper Motors with A4988 Drivers
-- RaspberryPi Camera Module 3 (Wide)
-- Python / C++ 
-- Serial Communication for Arduino <--> RaspberryPi
-- WiFi Communication HMI <--> RaspberryPi 
 
----
+- NumPy
 
-## Current Status
+- PyQt5
 
-🚧 **Work in Progress**  
+## Licenses 
+Just use it however you want in your project. This is just an educational project made so that I can learn different things. 
 
-Implentations so far include:
-- Homing
-- Go-To Angle for Tilt
-- GUI made with PyQT5
-- HMI <--> RaspberryPi
+## Inspiration 
+![Cs2 Engineer](https://wiki.teamfortress.com/w/images/thumb/6/6a/Engineertaunt1.PNG/350px-Engineertaunt1.PNG)
 
----
 
-## License
-
-Free to use 😉, just mention name in sources and send me updates too!
----
-
-## Author
-
-Built as a personal robotics learning project.  
-Feel free to explore, learn, and adapt the concepts — responsibly.
+## Contact 
+E-Mail :- takshcpatel@gmail.com
+Discord :- mrcjoc
+ 
