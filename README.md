@@ -1,6 +1,18 @@
 # BOB THE GUN
 This is an automatic turret inspired by the tf2's engineer's sentry gun. It detects and shoots threats if they do not comply from warning. I have made this project to learn about CAD, mechanical, computer vision, software->hardware communication, etc.
 
+## Links
+YouTube :- [Quack Robotics](https://www.youtube.com/@QuackRobotics)
+
+Instagram :- [@quackrobotics](https://www.instagram.com/quackrobotics)
+
+OnShape :- [OnShape CAD View](https://cad.onshape.com/documents/a227c9c3e91dedc730053277/w/3ffe9ea86f039fb92ebcc4d6/e/9ef318677793f062c9bceb51?renderMode=0&uiState=6988989fe881a3d28d2be3f7)
+
+Hackclub Blueprint :- [Bob the Gun](https://blueprint.hackclub.com/projects/9715)
+
+Hackclub Flavortown :- [Bob the Gun](https://flavortown.hackclub.com/projects/8451)
+
+
 ![Image of gun](https://github.com/takshcpatel/automatic-turret/blob/main/Image%20And%20Videos/IMG_4446.JPG?raw=true)
 
 ![Image of CAD](https://github.com/takshcpatel/automatic-turret/blob/main/Image%20And%20Videos/CAD.jpg?raw=true)
