@@ -42,14 +42,14 @@ I have used a 12V+ 10000mAh Li-Po battery which connects to the CNC Shield and a
 - There can be other similar use case in many fields, mainly for security but more is yet to be discovered.
 
 ## Hardware List
-|Item| Price  |
-|--|--|
-|RaspberryPi 5 8Gb  |99$|
-|RaspberryPi Camera 3 Wide| 21$ |
-|Arducam ToF Camera | 66$ |
-|Orange NMC 11.1V 10000mAh | 44$ |
-| 3D Printed Parts | Not accounted for
-|Total|≈232$
+|Item| Price| Link |
+|--|--|--|
+|RaspberryPi 5 8Gb  |99$| [RaspberryPi 5 8Gb ](https://robu.in/product/raspberry-pi-5-model-8gb/)
+|RaspberryPi Camera 3 Wide| 21$ | [RaspberryPi Camera Module 3 Wide](https://robu.in/product/raspberry-pi-camera-module-3-wide/)
+|Arducam ToF Camera | 66$ | [Arducam ToF Camera](https://robu.in/product/arducam-time-of-flight-camera-for-raspberry-pi/)
+|Orange NMC 11.1V 10000mAh | 44$ | [Orange NMC 11.1V 10000maH](https://aerokartindia.in/product/orange-nmc-18650-11-1v-10000mah-3c-3s4p-li-ion-battery-pack/)
+| 3D Printed Parts | Not accounted for | - 
+|Total|232$| -
 
 ## Libraries
 
