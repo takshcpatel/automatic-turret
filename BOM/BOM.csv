@@ -1,9 +1,5 @@
-Sr. No.,Name,Quantity,Price Single (USD),Price Total (USD),Price Total (INR),Link
-1,Nema 17 Stepper Motor,3,5.55,16.65,500,https://robokits.co.in/motors/stepper-motor/stepper-motor-without-gearbox/nema17-4.4kgcm-stepper-motor-for-3d-printers--premium
-2,Raspberry Pi 5 (8GB),1,99.85,99.85,9000,https://robu.in/product/raspberry-pi-5-model-8gb/
-3,Raspberry Pi Camera Module 3 Wide,1,28.85,28.85,2600,https://robu.in/product/raspberry-pi-camera-module-3-wide/
-4,XH-M404 Voltage Regulator,1,3.75,3.75,338,https://robu.in/product/xl4016e1-200w-step-down-power-supply-module/
-5,Arducam Time of Flight Camera,1,66.56,66.56,6000,https://robu.in/product/arducam-time-of-flight-camera-for-raspberry-pi/
-6,Orange NMC 18650 11.1V 10000mAh Battery Pack,1,55.47,55.47,5000,https://aerokartindia.in/product/orange-nmc-18650-11-1v-10000mah-3c-3s4p-li-ion-battery-pack/
-7,Miscellaneous (Mech, Elec, Etc),-, -,15,1350,
-,,Total,,≈280,≈25000,
+Sr. No.,Name,Quantity,Price Single,Price Total USD,Price Total INR
+1,Raspberry Pi 5 8GB,1,≈ 99.00$,≈ 99.00$,9000₹
+2,Raspberry Pi Camera 3 Wide,1,≈ 21.00$,≈ 21.00$,1880₹
+3,Arducam Time of Flight Camera,1,≈ 66.00$,≈ 66.00$,6000₹
+4,Orange NMC 18650 11.1V 10000mAh,1,≈ 44.00$,≈ 44.00$,4000₹
