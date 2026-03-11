@@ -1,4 +1,3 @@
-import time
 from PyQt5.QtWidgets import (
     QApplication,
     QWidget,
@@ -29,12 +28,9 @@ class Window(QWidget):
 
         self.camera = CameraWorker()
         self.camera.frame_ready.connect(self.on_new_frame)
-        self.camera.MODE.connect(self.update_mode)
         self.camera.err_signal.connect(self.send_tracking)
         self.camera.status.connect(self.log)
         self.camera.ATTACK.connect(self.attack_manager)
-
-        self.current_mode = 0
 
         self.camera.start()
         self.deadzone_value.connect(self.camera.update_deadzone)
@@ -181,37 +177,16 @@ class Window(QWidget):
             }}
         """)
 
-    def update_mode(self, mode):
-        self.current_mode = mode
-        print(f"mode = {mode}")
-
     def send_tracking(self, err_x, err_y, x_speed, y_speed):
         if self.ser and self.ser.is_open:
-
-            if self.current_mode == "TRACKING":
-                try:
-                    cmd = f"G2 {err_x} {err_y} {x_speed} {y_speed}"
-                    self.ser.write((cmd + "\n").encode())
-                except Exception as e:
-                    self.log(f"ERROR: {e}")
-
-            else:
-                try:
-                    if not hasattr(self, "scan_dir"):
-                        self.scan_dir = -1
-                        self.last_scan_time = 0
-
-                    now = time.time()
-
-                    if now - self.last_scan_time > 0.4:
-                        cmd = f"G2 {100*self.scan_dir} 0 2000 2000"
-                        self.ser.write((cmd + "\n").encode())
-
-                        self.scan_dir *= -1
-                        self.last_scan_time = now
-
-                except Exception as e:
-                    self.log(f"ERROR: {e}")
+            try:
+                cmd = f"G2 {err_x} {err_y} {x_speed} {y_speed}"
+                self.ser.write((cmd + "\n").encode())
+            except Exception as e:
+                self.log(f"ERROR: {e}")
+        else:
+            # self.log("[!!!] Serial port not connected.") # commented cuz fuck log spam
+            pass
 
     def attack_manager(self, is_attacking):
         if is_attacking != self.previous_attack_state:
