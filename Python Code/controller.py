@@ -9,13 +9,14 @@ import time
 
 import threading
 
+
 class CameraWorker(QThread):
     frame_ready = pyqtSignal(object)
     err_signal = pyqtSignal(int, int, int, int)
     status = pyqtSignal(str)
     ATTACK = pyqtSignal(bool)
+    MODE = pyqtSignal(str)
 
-    
     X_STEP_SIZE = 0
     Y_STEP_SIZE = 0
 
@@ -32,6 +33,7 @@ class CameraWorker(QThread):
         self.X_SPEED = 4000
         self.Y_SPEED = 4000
 
+        self.current_mode = "SCANNING"
 
     def run(self):
         self.picam2 = Picamera2()
@@ -41,10 +43,10 @@ class CameraWorker(QThread):
                 transform=Transform(rotation=180),
             )
         )
-        
+
         self.picam2.start()
         time.sleep(1.5)
-        
+
         self.picam2.set_controls({"AfMode": 2})
         self.status.emit("[!] Camera started")
         self.running = True
@@ -55,18 +57,19 @@ class CameraWorker(QThread):
 
             h, w, _ = frame.shape
             screen_center = (w // 2, h // 2)
-            
+
             err_x, err_y = 0, 0
+            target_found = False
 
             hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
             lower_yellow = np.array([20, 100, 100])
             upper_yellow = np.array([30, 255, 255])
-            
+
             mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
             mask = cv2.GaussianBlur(mask, (5, 5), 0)
             mask = cv2.erode(mask, None, iterations=2)
             mask = cv2.dilate(mask, None, iterations=2)
-            
+
             contours, _ = cv2.findContours(
                 mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
             )
@@ -79,6 +82,7 @@ class CameraWorker(QThread):
             if contours:
                 largest = max(contours, key=cv2.contourArea)
                 if cv2.contourArea(largest) > 500:
+                    target_found = True
                     x, y, bw, bh = cv2.boundingRect(largest)
                     obj_center = (x + bw // 2, y + bh // 2)
 
@@ -107,7 +111,7 @@ class CameraWorker(QThread):
                     if abs(err_x) >= 200:
                         X_STEP_SIZE = 3
                         self.X_SPEED = 5000
-
+                    
                     if abs(err_y) < 50 and abs(err_y) > 0:
                         Y_STEP_SIZE = 1
                         self.Y_SPEED = 3000
@@ -134,28 +138,30 @@ class CameraWorker(QThread):
                     cv2.circle(frame, obj_center, 3, (0, 0, 255), -1)
                     cv2.line(frame, screen_center, obj_center, (255, 0, 0), 2)
 
+            new_mode = "TRACKING" if target_found else "SCANNING"
+            if new_mode != self.current_mode:
+                self.current_mode = new_mode
+                self.MODE.emit(new_mode)
+
             if in_deadzone:
                 if self.attack_timer_start is None:
                     self.attack_timer_start = time.monotonic()
                 elif not self.attack_emitted and (time.monotonic() - self.attack_timer_start) >= self.attack_timeout:
                     self.attack_emitted = True
-                    # self.status.emit("[!] ATTACK triggered")
                     self.ATTACK.emit(True)
             else:
                 if self.attack_timer_start is not None or self.attack_emitted:
                     self.attack_timer_start = None
                     self.attack_emitted = False
-                    # self.status.emit("[!] ATTACK triggered")
-                    self.ATTACK.emit(False)   
+                    self.ATTACK.emit(False)
 
             self.err_signal.emit(err_x, err_y, self.X_SPEED, self.Y_SPEED)
-            # print(f"Error X: {err_x}, Error Y: {err_y}")
             self.frame_ready.emit(frame)
             time.sleep(0.01)
 
         self.picam2.stop()
         self.status.emit("[!] Camera stopped")
-    
+
     @pyqtSlot(int)
     def update_deadzone(self, value):
         self.SLIDER_deadzone = value
